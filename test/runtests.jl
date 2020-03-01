@@ -1,6 +1,6 @@
     using Lexicographic
     using Test
-
+    using Random: shuffle
     @testset "Lexicographic.jl" begin
         @testset "inherit NaN behavior" begin
             nan1 = (NaN, 1)
@@ -26,8 +26,18 @@
         end
 
         @testset "short lex" begin
-            @test 1,2,2) < (2,1) # just to show what Base.Tuple does
+            @test (1,2,2) < (2,1) # just to show what Base does
+            @test [1,2,2] < [2,1] # just to show what Base does
             @test ShortLex((1,2,2)) > ShortLex((2,1))
+            @test ShortLex([1,2,2]) > ShortLex([2,1])
 
+            sorted_words = ["zz", "boy", "dog", "jewel", "dogged", "jewelia", "boyfriend"]
+            for _ in 1:10
+                r = shuffle(sorted_words)
+                r_ = map(s->ShortLex(collect(s)), r)
+                s_ = sort(r_)
+                s = map(e->prod(e.x), s_)
+                @test s == sorted_words
+            end
         end
     end

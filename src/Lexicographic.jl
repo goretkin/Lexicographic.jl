@@ -47,7 +47,9 @@ for f in [:(==), :isequal]
     end
 end
 
-Base.typemax(::ShortLex) = error("no such element under short-lex ordering")
+# follow Base's lead on typemax(::String) (i.e. no definition)
+# Base.typemax(::ShortLex) = error("no such element under short-lex ordering")
+
 Base.typemin(::ShortLex) = ShortLex(())
 
 end
