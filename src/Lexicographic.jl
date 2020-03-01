@@ -1,6 +1,7 @@
 module Lexicographic
 
-export FixedLengthLex
+export FixedLengthLex, ShortLex
+
 struct FixedLengthLex{T}
     x::T
 end
@@ -27,5 +28,26 @@ for typeminmax in [:typemin, :typemax]
         return $(typeminmax)(typeof(v))
     end
 end
+
+
+# short-lex
+
+struct ShortLex{T}
+    x::T
+end
+
+function Base.isless(a::ShortLex, b::ShortLex)
+    embed(x) = FixedLengthLex{Tuple{Int, Any}}((length(x), x))
+    return isless(embed(a.x), embed(b.x))
+end
+
+for f in [:(==), :isequal]
+    @eval function Base.$f(a::ShortLex, b::ShortLex)
+        return $f(a.x, b.x)
+    end
+end
+
+Base.typemax(::ShortLex) = error("no such element under short-lex ordering")
+Base.typemin(::ShortLex) = ShortLex(())
 
 end

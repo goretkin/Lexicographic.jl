@@ -25,4 +25,9 @@
             @test typemax(v) >= v
         end
 
+        @testset "short lex" begin
+            @test 1,2,2) < (2,1) # just to show what Base.Tuple does
+            @test ShortLex((1,2,2)) > ShortLex((2,1))
+
+        end
     end
