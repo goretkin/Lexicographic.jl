@@ -1,0 +1,7 @@
+name = "Lexicographic"
+uuid = "f3857b5d-3a50-4050-98ae-54c465879683"
+authors = ["Gustavo Goretkin <gustavo.goretkin@gmail.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1.2"
