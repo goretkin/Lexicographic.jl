@@ -50,6 +50,7 @@ end
 # follow Base's lead on typemax(::String) (i.e. no definition)
 # Base.typemax(::ShortLex) = error("no such element under short-lex ordering")
 
-Base.typemin(::ShortLex) = ShortLex(())
-
+Base.typemin(::Type{ShortLex{T}}) where {T<:Tuple} = ShortLex(())
+Base.typemin(::Type{ShortLex{T}}) where {T<:Vector} = ShortLex(T())
+Base.typemin(::ShortLex{T}) where T = typemin(ShortLex{T})
 end
