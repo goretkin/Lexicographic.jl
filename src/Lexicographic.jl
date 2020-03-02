@@ -36,7 +36,9 @@ struct ShortLex{T}
     x::T
 end
 
-embed_shortlex(seq::T) where T = FixedLengthLex((length(seq), seq))
+function embed_shortlex(seq::T) where T
+     return FixedLengthLex((length(seq), seq))
+ end
 
 function Base.isless(a::ShortLex, b::ShortLex)
     return isless(embed_shortlex(a.x), embed_shortlex(b.x))
