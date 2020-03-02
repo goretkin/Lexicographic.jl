@@ -36,9 +36,10 @@ struct ShortLex{T}
     x::T
 end
 
+embed_shortlex(seq::T) where T = FixedLengthLex((length(x), x))
+
 function Base.isless(a::ShortLex, b::ShortLex)
-    embed(x) = FixedLengthLex{Tuple{Int, Any}}((length(x), x))
-    return isless(embed(a.x), embed(b.x))
+    return isless(embed_shortlex(a.x), embed_shortlex(b.x))
 end
 
 for f in [:(==), :isequal]
