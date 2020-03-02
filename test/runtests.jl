@@ -3,18 +3,10 @@
     using Random: shuffle
     @testset "Lexicographic.jl" begin
         @testset "fixed length" begin
-            @testset "inherit NaN behavior" begin
-                nan1 = (NaN, 1)
-
-                @test nan1 != nan1
-                @test isequal(nan1, nan1)
-
-                l_nan1 = FixedLengthLex(nan1)
-                @test l_nan1 != l_nan1
-                @test isequal(l_nan1, l_nan1)
-            end
 
             @test_throws Exception FixedLengthLex((1, 2)) < FixedLengthLex((1, 2, 3))
+            @test FixedLengthLex((1, 2)) < FixedLengthLex((1, 3))
+            @test FixedLengthLex((1, 2)) < FixedLengthLex((2, 1))
 
             @testset "typemin/max" begin
                 for v in [FixedLengthLex((1, 2)), FixedLengthLex((1, 2.0))]
@@ -57,5 +49,18 @@
             @test_throws Exception typemax(typeof(ShortLex((1,2,2))))
             @test typemin(typeof(ShortLex([1.0,2.0,2.0]))) == ShortLex(Vector{Float64}())
             @test_throws Exception typemax(typeof(ShortLex((1,2,2))))
+        end
+
+        @testset "inherit NaN behavior" begin
+            nan1 = (NaN, 1)
+
+            @test nan1 != nan1
+            @test isequal(nan1, nan1)
+
+            for T = [FixedLengthLex, ShortLex]
+                l_nan1 = T(nan1)
+                @test l_nan1 != l_nan1
+                @test isequal(l_nan1, l_nan1)
+            end
         end
     end
