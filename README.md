@@ -17,6 +17,18 @@ Julia's great support for multiple dispatch means that there are roughly two pos
 
 This package defines new types, and extends existing ordering functions in `Base`: (`isequal`, `==`, `isless`)
 
+This choice is consistent with defining new methods for
+
+`*(::Complex{T}, ::Complex{T})`
+
+instead of  defining
+
+`complex_times(::NTuple{2, T}, ::NTuple{2,T})`
+
+This is important not just for brevity, but also for consistency, because there's an implicit interface with `one`, `zero`, `:*`, `:+`, `inv`, `:\`. The alternative of defining `complex_plus`, `complex_one` means that an algorithm that could otherwise be generic cannot.
+
+The implicit "ordering" interface in Julia is smaller, so there wouldn't be many `lexico_isless`, etc., but by defining a few methods, then `:<`, `:>`, `:<=`, `:>=` all work in a consistent manner.
+
 For some discussion on these two possible approaches, see:
 - https://discourse.julialang.org/t/designing-apis-defining-new-methods-versus-passing-in-functions/18699/11
 - https://dspace.mit.edu/handle/1721.1/115964
